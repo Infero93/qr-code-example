@@ -2,11 +2,22 @@ var $ = require("jquery");
 var QRCode = require('qrcode')
 var canvas = document.getElementById('canvas')
  
-
-$( "#qrvalue" ).keypress(function() {
-    QRCode.toCanvas(canvas, $(this).val(), function (error) {
+function generateQRCode(value) {
+    console.log("Generating qrcode for value: " + value);
+    QRCode.toCanvas(canvas, value, function (error) {
         if (error) console.error(error)
-        console.log('success!');
       })
+}
+
+$("#qrvalue").keypress(function (e) {
+    if (e.which == 13) {
+        generateQRCode($(this).val());
+        e.preventDefault();
+        return false;
+    }
 });
 
+$(document).ready(function()    {
+    let value = $("#qrvalue").val();
+    generateQRCode(value)
+});
